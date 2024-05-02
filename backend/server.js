@@ -3,11 +3,14 @@ import e from 'express'
 import authRoutes from "./routes/auth.route.js"
 import connectDb from './db.js';
 import dotenv from "dotenv";
-
+import cookieParser from 'cookie-parser';
+console.log("started")
 dotenv.config()
 const port=process.env.PORT || 8000;
 const app=e();
-
+app.use(cookieParser())
+app.use(e.json())
+app.use(e.urlencoded({extended:true})) //to parse from url encoded
 app.get('/',(req,res)=>{
     res.send("hello home")
     
@@ -16,6 +19,6 @@ app.use("/api/v1/auth",authRoutes);
 console.log(process.env.MONGO_URL,port)
 
 app.listen(8000,()=>{
-    console.log("sever is running ")
-    // connectDb();
+    console.log("sever is running "+port)
+    connectDb();
 });
