@@ -100,7 +100,12 @@ const userSchema=new mongoose.Schema({
     link:{
         type:String,
         default:""
-    }
+    },
+    likedPost:[{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:'Post',
+        default:[]
+    }]
 } ,{timestamps:true})
 
 export const  User=mongoose.model("User",userSchema);

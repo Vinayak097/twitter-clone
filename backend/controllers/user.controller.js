@@ -25,7 +25,7 @@ export const followUnfollowUser= async(req,res)=>{
         const {id}=req.params;
         const currentuser=await User.findById(req.user._id)  
         if(id==req.user._id.toString()){
-            res.status(400).json({error:"You cant follow/unfollow userself"})
+           return res.status(400).json({error:"You cant follow/unfollow userself"})
         }
         const isfollowing=currentuser.following.includes(id);
         console.log("enter if folow")
@@ -33,12 +33,7 @@ export const followUnfollowUser= async(req,res)=>{
             //unfollow
             await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } });
 			await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
-            const notify=new Notification({
-                from: req.user._id,
-                to: id,
-                type: 'unfollow',
-            })
-            notify.save();
+            
             res.status(200).json({message:"unfolows "+req.user._id})
             
         

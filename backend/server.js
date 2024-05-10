@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import cookieParser from 'cookie-parser';
 import userRouter from './routes/user.route.js'
 import { v2 as cloudinary } from "cloudinary";
+import postRouter from "./routes/post.route.js"
+
 console.log("started")
 dotenv.config()
 cloudinary.config({
@@ -20,12 +22,12 @@ app.use(e.json())
 app.use(e.urlencoded({extended:true})) //to parse from url encoded
 app.get('/',(req,res)=>{
     res.send("hello home")
-    
 })
 
 app.use("/api/v1/auth",authRoutes);
-app.use("/api/v1/user",userRouter)
-console.log(process.env.MONGO_URL,port)
+app.use("/api/v1/user",userRouter);
+app.use("/api/v1/post",postRouter);
+console.log(process.env.MONGO_URL,port);
 
 app.listen(8000,()=>{
     console.log("sever is running "+port)
