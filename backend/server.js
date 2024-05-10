@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 import userRouter from './routes/user.route.js'
 import { v2 as cloudinary } from "cloudinary";
 import postRouter from "./routes/post.route.js"
-
+import notificationRouter from "./routes/notification.route.js"
 console.log("started")
 dotenv.config()
 cloudinary.config({
@@ -27,6 +27,7 @@ app.get('/',(req,res)=>{
 app.use("/api/v1/auth",authRoutes);
 app.use("/api/v1/user",userRouter);
 app.use("/api/v1/post",postRouter);
+app.use("/api/v1/notification",notificationRouter);
 console.log(process.env.MONGO_URL,port);
 
 app.listen(8000,()=>{
