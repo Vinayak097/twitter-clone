@@ -7,9 +7,7 @@ router.get('/me',protectRouter,getMe)
 router.post('/signup',signup)
 router.post('/login',login)
 router.post('/logout',logout)
-router.get("/up",(req,res)=>{
-    res.send(req.body.id)
-})
+
 
 
 
