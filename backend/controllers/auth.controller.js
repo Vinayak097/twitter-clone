@@ -63,7 +63,7 @@ export const signup = async (req, res) => {
 export const login=async(req,res)=>{
     try{
     const {username,password}=req.body;
-
+	console.log("username : ",username)
     const newuser=await User.findOne({username})
     const hashedPassword=await bcrypt.compare(password,newuser.password)
     if(!newuser||!hashedPassword){
@@ -85,9 +85,10 @@ export const login=async(req,res)=>{
         })
 
 }catch(e){
+	console.log(e.message)
     res.status(500)
         return res.json({
-            msg:"error in login : "+e.message
+            error:"Internal server error / something went wrong : "
         })
 }
 }
