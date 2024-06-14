@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { backend_url } from "../../config";
 import XSvg from "../../components/svgs/X";
-
+import { FaUser } from "react-icons/fa";
 import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
 
@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
+	const navigate=useNavigate();
 	const [formData, setFormData] = useState({
 		username: "",
 		password: "",
@@ -24,7 +25,7 @@ const LoginPage = () => {
 	} = useMutation({
 		mutationFn: async ({ username, password }) => {
 			try {
-				const res = await fetch("http://localhost:8000/api/auth/login", {
+				const res = await fetch(`${backend_url}/api/auth/login`, {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -37,6 +38,8 @@ const LoginPage = () => {
 				if (!res.ok) {
 					throw new Error(data.error || "Something went wrong");
 				}
+				
+				
 			} catch (error) {
 				console.log("error ",error)
 				throw new Error(error);
@@ -46,6 +49,7 @@ const LoginPage = () => {
 			// refetch the authUser
 			toast.success("logged successfully")
 			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+			navigate("/")
 		},
 	});
 
@@ -68,7 +72,7 @@ const LoginPage = () => {
 					<XSvg className='w-24 lg:hidden fill-white' />
 					<h1 className='text-4xl font-extrabold text-white'>{"Let's"} go.</h1>
 					<label className='input input-bordered rounded flex items-center gap-2'>
-						<MdOutlineMail />
+						<FaUser />
 						<input
 							type='text'
 							className='grow'

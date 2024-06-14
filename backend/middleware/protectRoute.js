@@ -5,9 +5,11 @@ export const protectRouter=async(req,res,next)=>{
     try{
         console.log("if")
         const token = req.cookies.jwt;
-		if (!token) {
+        console.log("cookei got",token)
+		if (!token ) {
 			return res.status(401).json({ error: "Unauthorized: No Token Provided" });
 		}
+        
 
 
     const decoded= await jwt.verify(token,process.env.JWT_SECRET)

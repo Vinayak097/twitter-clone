@@ -1,4 +1,4 @@
-import * as fs from 'fs'
+
 import e from 'express'
 import authRoutes from "./routes/auth.route.js"
 import connectDb from './db.js';
@@ -32,7 +32,8 @@ app.use("/api/post",postRouter);
 app.use("/api/notification",notificationRouter);
 console.log(process.env.MONGO_URL,port);
 
-app.listen(8000,()=>{
+app.listen(8000,async()=>{
+    await connectDb();
     console.log("sever is running "+port)
-    connectDb();
+    
 });

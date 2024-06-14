@@ -1,16 +1,20 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
 import XSvg from "../../components/svgs/X";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { MdOutlineMail } from "react-icons/md";
 import { FaUser } from "react-icons/fa";
 import { MdPassword } from "react-icons/md";
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { IoMailOpen } from "react-icons/io5";
+import { backend_url } from "../../config";
 import toast from "react-hot-toast";
 
+
 const SignUpPage = () => {
+	const navigate=useNavigate();
+	const queryClient=useQueryClient();
+	
 	const [formData, setFormData] = useState({
 		email: "",
 		username: "",
@@ -20,7 +24,7 @@ const SignUpPage = () => {
 	const {mutate,isError,isPending,error}=useMutation({
 		mutationFn:async({email,username,fullName,password})=>{
 			try{
-				const r=await fetch("/api/auth/signup",{
+				const r=await fetch(`${backend_url}/api/auth/signup`,{
 					method:"POST",
 					headers:{
 						"Content-Type":"application/json"
@@ -40,6 +44,8 @@ const SignUpPage = () => {
 		},
 		onSuccess:()=>{
 			toast.success("user created successfully")
+			queryClient.invalidateQueries({ queryKey: ["authUser"] });
+			navigate("/")
 		}
 	})
 
